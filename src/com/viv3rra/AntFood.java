@@ -8,8 +8,8 @@ public class AntFood {
     private int y;
 
     public AntFood() {
-        this.x = (int) Math.round(Math.random() * DrawAnAnt.WORLD_SIZE);
-        this.y = (int) Math.round(Math.random() * DrawAnAnt.WORLD_SIZE);
+        this.x = (int) Math.round(Math.random() * Canvas.WORLD_SIZE);
+        this.y = (int) Math.round(Math.random() * Canvas.WORLD_SIZE);
     }
 
     public int getX() {

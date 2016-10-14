@@ -15,8 +15,8 @@ public class Ant {
     private double fitness = 0.0;
 
     public Ant() {
-        this.x = (int) Math.round(Math.random() * DrawAnAnt.WORLD_SIZE);
-        this.y = (int) Math.round(Math.random() * DrawAnAnt.WORLD_SIZE);
+        this.x = (int) Math.round(Math.random() * Canvas.WORLD_SIZE);
+        this.y = (int) Math.round(Math.random() * Canvas.WORLD_SIZE);
         this.direction = (int) Math.round(Math.random() * 360);
     }
 
@@ -53,7 +53,7 @@ public class Ant {
     }
 
     public List<AntFood> foundFood(List<AntFood> food) {
-        int mouth = x + (int) Math.round(DrawAnAnt.ANT_SCALED_SIZE);
+        int mouth = x + (int) Math.round(Canvas.ANT_SCALED_SIZE);
         List<AntFood> toRemove = new ArrayList<>();
 
         for (AntFood f : food) {
@@ -68,8 +68,18 @@ public class Ant {
         return food;
     }
 
+    private void mutate() {
+        double chance = Math.random();
+        if (chance > 0.975) {
+            direction += 5;
+        } else if (chance < 0.025) {
+            direction -= 10;
+        }
+    }
+
     public void updatePos() {
         // Set new position for ant based on direction
+        mutate();
         int ax = (int) Math.round(Math.sin(Math.toRadians(direction)));
         int ay = -(int) Math.round(Math.cos(Math.toRadians(direction)));
         double length = Math.sqrt((ax * ax) + (ay * ay));
@@ -78,18 +88,18 @@ public class Ant {
         int movementY = ((int) Math.round(ay/length)) * speed;
 
         // Wrap position to world
-        if (x + movementX > DrawAnAnt.WORLD_SIZE) {
-            x = -(int) Math.round(DrawAnAnt.ANT_SCALED_SIZE * 2);
-        } else if (x + movementX < -Math.round(DrawAnAnt.ANT_SCALED_SIZE * 2)) {
-            x = DrawAnAnt.WORLD_SIZE;
+        if (x + movementX > Canvas.WORLD_SIZE) {
+            x = -(int) Math.round(Canvas.ANT_SCALED_SIZE * 2);
+        } else if (x + movementX < -Math.round(Canvas.ANT_SCALED_SIZE * 2)) {
+            x = Canvas.WORLD_SIZE;
         } else {
             x += movementX;
         }
 
-        if (y + movementY > DrawAnAnt.WORLD_SIZE) {
-            y = -(int) Math.round(DrawAnAnt.ANT_SCALED_SIZE * 2);
-        } else if (y + movementY < -Math.round(DrawAnAnt.ANT_SCALED_SIZE * 2)) {
-            y = DrawAnAnt.WORLD_SIZE;
+        if (y + movementY > Canvas.WORLD_SIZE) {
+            y = -(int) Math.round(Canvas.ANT_SCALED_SIZE * 2);
+        } else if (y + movementY < -Math.round(Canvas.ANT_SCALED_SIZE * 2)) {
+            y = Canvas.WORLD_SIZE;
         } else {
             y += movementY;
         }

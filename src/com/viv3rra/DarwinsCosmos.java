@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DarwinsCosmos {
-    DrawAnAnt canvas;
+    private final int ANT_NUM = 100;
+    private final int FOOD_NUM = 50;
+    Canvas canvas;
     List<Ant> ants = new ArrayList<>();
     List<AntFood> food = new ArrayList<>();
     private int bestScore = 0;
@@ -15,15 +17,15 @@ public class DarwinsCosmos {
     }
 
     private void initializeWorld() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < ANT_NUM; i++) {
             ants.add(new Ant());
         }
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < FOOD_NUM; i++) {
             food.add(new AntFood());
         }
 
-        canvas = new DrawAnAnt(ants, food);
+        canvas = new Canvas(ants, food);
     }
 
     private void run() {
@@ -47,6 +49,10 @@ public class DarwinsCosmos {
                 bestScore = (int)ant.getFitness();
             }
             ant.updatePos();
+        }
+        int amountEaten = FOOD_NUM - food.size();
+        for (int i = 0; i < amountEaten; i++) {
+            food.add(new AntFood());
         }
         System.out.println("Food left: " + food.size() + ", TotalFitness: " + totalFitness + ", BestScore: " + bestScore);
     }
