@@ -21,9 +21,8 @@ public class DrawAnAnt extends JFrame {
     public static final int WORLD_SIZE = 700;
     private static double ANT_SCALE_FACTOR = 0.058997050147492625;
     public static final double ANT_SCALED_SIZE = 339 * ANT_SCALE_FACTOR;
-    // Define constants for the various dimensions
-    private int IMAGE_SIZE = 20;
     private List<Ant> ants;
+    private List<AntFood> food;
     /*private int x = (CANVAS_SIZE / 2) - (IMAGE_SIZE / 2);
     private int y = (CANVAS_SIZE / 2) - (IMAGE_SIZE / 2);
     private int rotation = 0;*/
@@ -34,15 +33,20 @@ public class DrawAnAnt extends JFrame {
 
     // Images
     private String antFilename = "/res/img/ant_square.png";
-    private BufferedImage ant;   // drawImage() uses an Image object
+    private BufferedImage antImg;
+    private String superAntFilename = "/res/img/super_ant_square.png";
+    private BufferedImage superAntImg;
 
     // Constructor to set up the GUI components and event handlers
-    public DrawAnAnt(List<Ant> ants) {
+    public DrawAnAnt(List<Ant> ants, List<AntFood> food) {
         this.ants = ants;
+        this.food = food;
         // Prepare the ImageIcon and Image objects for drawImage()
-        ant = null;
+        antImg = null;
+        superAntImg = null;
         try {
-            ant = ImageIO.read(getClass().getResource(antFilename));
+            antImg = ImageIO.read(getClass().getResource(antFilename));
+            superAntImg = ImageIO.read(getClass().getResource(superAntFilename));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Cannot find image!!");
@@ -55,19 +59,11 @@ public class DrawAnAnt extends JFrame {
         pack();  // pack the components of "super" JFrame
         setTitle("DarwinsCosmos");
         setVisible(true);
-        //update();
     }
 
-    public void update() {
-        if (/*y*/ - 1 < -IMAGE_SIZE) {
-            //y = CANVAS_SIZE;
-        } else {
-            //y -= 1;
-        }
-        for (Ant a : ants) {
-            a.updatePos();
-            //a.printTest();
-        }
+    public void updateCanvas(List<Ant> ants, List<AntFood> food) {
+        this.ants = ants;
+        this.food = food;
         repaint();
     }
 
@@ -81,16 +77,22 @@ public class DrawAnAnt extends JFrame {
             setBackground(Color.WHITE);  // Set background color for this JPanel
 
             for (Ant a : ants) {
+                BufferedImage img = a.getFitness() > 0 ? superAntImg : antImg;
                 double rotationRequired = Math.toRadians(a.getDirection());
-                double locationX = ant.getWidth() / 2;
-                double locationY = ant.getHeight() / 2;
+                double locationX = img.getWidth() / 2;
+                double locationY = img.getHeight() / 2;
+
                 AffineTransform objTrans = new AffineTransform();
                 objTrans.scale(ANT_SCALE_FACTOR, ANT_SCALE_FACTOR);
-                objTrans.translate(ant.getWidth() / 2, ant.getHeight() / 2);
+                objTrans.translate(img.getWidth() / 2, img.getHeight() / 2);
                 objTrans.rotate(rotationRequired, locationX, locationY);
                 AffineTransformOp op = new AffineTransformOp(objTrans, AffineTransformOp.TYPE_BILINEAR);
 
-                g2d.drawImage(op.filter(ant, null), a.getX(), a.getY(), null);
+                g2d.drawImage(op.filter(img, null), a.getX(), a.getY(), null);
+            }
+
+            for (AntFood f : food) {
+                g2d.drawRect(f.getX(), f.getY(), 5, 5);
             }
         }
     }
