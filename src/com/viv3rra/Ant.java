@@ -53,11 +53,12 @@ public class Ant {
     }
 
     public List<AntFood> foundFood(List<AntFood> food) {
-        int mouth = x + (int) Math.round(Canvas.ANT_SCALED_SIZE);
+        int centerX = x + (int) Math.round(Canvas.ANT_SCALED_SIZE) / 2;
+        int centerY = y + (int) Math.round(Canvas.ANT_SCALED_SIZE) / 2;
         List<AntFood> toRemove = new ArrayList<>();
 
         for (AntFood f : food) {
-            if (f.getX() < mouth + 20 && f.getX() > mouth - 20 && f.getY() == y) {
+            if (f.getX()+3 < centerX+10 && f.getX()+3 > centerX-10 && f.getY()+3 < centerY+10 && f.getY()+3 > centerY-10) {
                 fitness += 1;
                 toRemove.add(f);
             }

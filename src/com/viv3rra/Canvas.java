@@ -89,10 +89,12 @@ public class Canvas extends JFrame {
                 AffineTransformOp op = new AffineTransformOp(objTrans, AffineTransformOp.TYPE_BILINEAR);
 
                 g2d.drawImage(op.filter(img, null), a.getX(), a.getY(), null);
+                //g2d.setColor(Color.BLUE);
+                //g2d.drawRect(a.getX()+(int)ANT_SCALED_SIZE-5, a.getY()+(int)ANT_SCALED_SIZE-5, 10, 10);
             }
 
             for (AntFood f : food) {
-                g2d.drawRect(f.getX(), f.getY(), 5, 5);
+                g2d.drawRect(f.getX(), f.getY(), AntFood.FOOD_SIZE, AntFood.FOOD_SIZE);
             }
         }
     }

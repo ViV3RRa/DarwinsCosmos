@@ -4,6 +4,7 @@ package com.viv3rra;
  * Created by krogh on 10/14/16.
  */
 public class AntFood {
+    public static final int FOOD_SIZE = 6;
     private int x;
     private int y;
 
